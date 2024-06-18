@@ -35,7 +35,7 @@ Using Llama-3 8B as an example.
 
 ## Downstream Task Performance Testing
 
-To reproduce the downstream task testing as described in the paper, run the following command:
+To reproduce the downstream task performance test as described in the paper, run the following command:
 
 ```bash
 lm_eval --model hf --model_args pretrained=./llama_3_8b/CHESS/model --tasks winogrande,sciq,piqa,openbookqa,hellaswag,boolq,arc_easy,arc_challenge --device cuda:0 --batch_size auto:4
