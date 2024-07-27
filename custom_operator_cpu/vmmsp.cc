@@ -12,15 +12,14 @@ void vmmsp_fp32(float* output, float* x, float* W, float* mask, int N, int K) {
             float mask_scalar = mask[n0 + n1];
             if (mask_scalar != 0.0) {
                 int tmp = (n0 + n1) * K;
-                __m256 accum = _mm256_setzero_ps();  // 初始化累加器为 0
+                __m256 accum = _mm256_setzero_ps(); 
 
                 for (int k = 0; k < K; k += 8) {
-                    __m256 w = _mm256_loadu_ps(&W[tmp + k]);  // 加载 W 的 8 个元素
-                    __m256 x_vec = _mm256_loadu_ps(&x[k]);   // 加载 x 的 8 个元素
-                    accum = _mm256_fmadd_ps(w, x_vec, accum); // accum += w * x_vec
+                    __m256 w = _mm256_loadu_ps(&W[tmp + k]); 
+                    __m256 x_vec = _mm256_loadu_ps(&x[k]); 
+                    accum = _mm256_fmadd_ps(w, x_vec, accum);
                 }
 
-                // 将累加器中的元素相加
                 __m256 hsum = _mm256_hadd_ps(accum, accum);
                 hsum = _mm256_hadd_ps(hsum, hsum);
                 __m128 hsum_high = _mm256_extractf128_ps(hsum, 1);

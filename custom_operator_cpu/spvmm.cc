@@ -17,17 +17,14 @@ void spvmm_fp32(
         if (n1_upperbound == BLOCK_N) {
             for (int k = 0; k < K; k++) {
                 if (x[k] != 0.0f) {
-                    __m256 x_k_vec = _mm256_set1_ps(x[k]); // Broadcast x[k] to all elements of the vector
+                    __m256 x_k_vec = _mm256_set1_ps(x[k]); 
 
                     for (int n1 = 0; n1 < n1_upperbound; n1 += 8) {
-                        // Load 8 elements from output and W
                         __m256 output_vec = _mm256_loadu_ps(&output[n0 + n1]);
                         __m256 W_vec = _mm256_loadu_ps(&W[k * N + n0 + n1]);
 
-                        // Perform the multiplication and addition
                         __m256 result_vec = _mm256_fmadd_ps(x_k_vec, W_vec, output_vec);
 
-                        // Store the result back to output
                         _mm256_storeu_ps(&output[n0 + n1], result_vec);
                     }
                 }
